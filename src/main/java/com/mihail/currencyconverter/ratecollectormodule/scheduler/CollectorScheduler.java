@@ -1,12 +1,12 @@
 package com.mihail.currencyconverter.ratecollectormodule.scheduler;
 
-import com.example.ratecollectormodule.controller.response.CollectorResponse;
-import com.example.ratecollectormodule.dto.CollectorDto;
-import com.example.ratecollectormodule.dto.mapper.CollectorDtoMapper;
-import com.example.ratecollectormodule.model.Collector;
-import com.example.ratecollectormodule.model.mapper.CollectorMapper;
-import com.example.ratecollectormodule.repository.CollectorRepository;
-import com.example.ratecollectormodule.service.CollectorService;
+import com.mihail.currencyconverter.ratecollectormodule.controller.response.CollectorResponse;
+import com.mihail.currencyconverter.ratecollectormodule.dto.CollectorDto;
+import com.mihail.currencyconverter.ratecollectormodule.dto.mapper.CollectorDtoMapper;
+import com.mihail.currencyconverter.ratecollectormodule.model.Collector;
+import com.mihail.currencyconverter.ratecollectormodule.model.mapper.CollectorMapper;
+import com.mihail.currencyconverter.ratecollectormodule.repository.CollectorRepository;
+import com.mihail.currencyconverter.ratecollectormodule.service.CollectorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.scheduling.annotation.Scheduled;

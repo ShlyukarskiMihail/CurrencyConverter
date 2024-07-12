@@ -1,6 +1,6 @@
 package com.mihail.currencyconverter.ratecollectormodule.repository;
 
-import com.example.ratecollectormodule.model.Collector;
+import com.mihail.currencyconverter.ratecollectormodule.model.Collector;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 

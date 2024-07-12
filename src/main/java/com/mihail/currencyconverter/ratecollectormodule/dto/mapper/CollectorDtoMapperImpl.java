@@ -1,7 +1,7 @@
 package com.mihail.currencyconverter.ratecollectormodule.dto.mapper;
 
-import com.example.ratecollectormodule.controller.response.CollectorResponse;
-import com.example.ratecollectormodule.dto.CollectorDto;
+import com.mihail.currencyconverter.ratecollectormodule.controller.response.CollectorResponse;
+import com.mihail.currencyconverter.ratecollectormodule.dto.CollectorDto;
 import org.springframework.stereotype.Component;
 
 @Component

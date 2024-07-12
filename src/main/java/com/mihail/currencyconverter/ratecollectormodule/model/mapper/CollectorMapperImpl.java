@@ -1,8 +1,8 @@
 package com.mihail.currencyconverter.ratecollectormodule.model.mapper;
 
-import com.example.ratecollectormodule.dto.CollectorDto;
-import com.example.ratecollectormodule.model.Collector;
-import com.example.ratecollectormodule.model.Rate;
+import com.mihail.currencyconverter.ratecollectormodule.dto.CollectorDto;
+import com.mihail.currencyconverter.ratecollectormodule.model.Collector;
+import com.mihail.currencyconverter.ratecollectormodule.model.Rate;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
