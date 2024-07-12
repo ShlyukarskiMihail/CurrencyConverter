@@ -1,6 +1,6 @@
-package com.mihail.currencyconverter.collector.service;
+package com.mihail.currencyconverter.ratecollectormodule.service;
 
-import com.mihail.currencyconverter.collector.controller.response.RatesCollectorResponse;
+import com.example.ratecollectormodule.controller.response.CollectorResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,27 +12,37 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Service
 @RequiredArgsConstructor
 @Log4j2
-public class FixerServiceImpl implements FixerService{
+public class CurrencyServiceImpl implements CurrencyService {
 
     @Value("${FIXER_URL}")
     private String apiUrl;
 
     @Value("${FIXER_KEY}")
     private String apiKey;
+
     private final WebClient.Builder webClientBuilder;
 
     @Override
-    public RatesCollectorResponse getLatestRates() {
+    public CollectorResponse getLatestRates() {
         log.info("Sending request to Fixer API: {}", getResource(apiUrl, apiKey));
 
         try {
-            var response = buildResponse(getResource(apiUrl, apiKey));
-            if (response == null || response.getBase() == null) {
-                log.error("Fixer API returned null response or base currency is null");
+            final CollectorResponse response = buildResponse(getResource(apiUrl, apiKey));
+
+            if (response == null) {
+                log.error("Fixer API returned null response");
+                throw new IllegalStateException("Fixer API returned null response");
             }
+
+            if (response.getBase() == null) {
+                log.error("Fixer API returned response with null base currency");
+                throw new IllegalStateException("Fixer API returned response with null base currency");
+            }
+
             return response;
-        } catch (final WebClientException e) {
-            throw new IllegalStateException("Error connecting to Fixer API: " + e.getMessage());
+        } catch (WebClientException e) {
+            log.error("Error connecting to Fixer API: {}", e.getMessage());
+            throw new IllegalStateException("Error connecting to Fixer API", e);
         }
     }
 
@@ -43,12 +53,12 @@ public class FixerServiceImpl implements FixerService{
                 .toUriString();
     }
 
-    private RatesCollectorResponse buildResponse(final String url) {
+    private CollectorResponse buildResponse(final String url) {
         return webClientBuilder.build()
                 .get()
                 .uri(url)
                 .retrieve()
-                .bodyToMono(RatesCollectorResponse.class)
+                .bodyToMono(CollectorResponse.class)
                 .block();
     }
 }

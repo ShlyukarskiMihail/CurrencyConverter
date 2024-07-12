@@ -1,11 +1,14 @@
-package com.mihail.currencyconverter.collector.controller.response;
+package com.mihail.currencyconverter.ratecollectormodule.dto;
 
+import lombok.Builder;
 import lombok.Data;
+
 import java.math.BigDecimal;
 import java.util.Map;
 
 @Data
-public class RatesCollectorResponse {
+@Builder
+public class CollectorDto {
 
     private long timestamp;
     private String base;
