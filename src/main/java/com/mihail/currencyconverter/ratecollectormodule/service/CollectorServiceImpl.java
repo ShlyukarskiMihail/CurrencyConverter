@@ -6,6 +6,7 @@ import com.mihail.currencyconverter.ratecollectormodule.controller.response.Coll
 import com.mihail.currencyconverter.ratecollectormodule.repository.CollectorRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,10 +20,16 @@ public class CollectorServiceImpl implements CollectorService {
 
     private final CollectorRepository collectorRepository;
     private final CurrencyService currencyService;
+    private final RabbitTemplate rabbitTemplate;
 
     @Override
     public CollectorResponse getRatesData() {
         return currencyService.getLatestRates();
+    }
+
+    public void sendMessage(CollectorResponse collectorResponse) {
+        final String message = "Collecting Latest Rates: \n" + collectorResponse;
+        rabbitTemplate.convertAndSend("rateCollectorExchange", "latestRate", message);
     }
 
     @Override

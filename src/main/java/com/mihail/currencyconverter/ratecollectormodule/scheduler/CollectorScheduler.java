@@ -9,6 +9,7 @@ import com.mihail.currencyconverter.ratecollectormodule.repository.CollectorRepo
 import com.mihail.currencyconverter.ratecollectormodule.service.CollectorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -22,12 +23,13 @@ public class CollectorScheduler {
     private final CollectorMapper collectorMapper;
     private final CollectorRepository collectorRepository;
 
-    @Scheduled(cron = "0 50 17 * * *")
+    @Scheduled(cron = "0 45 16 * * *")
     public void updateCurrencyRates() {
         final CollectorResponse collectorResponse = collectorService.getRatesData();
         final CollectorDto collectorDto = collectorDtoMapper.mapToDto(collectorResponse);
         final Collector collector = collectorMapper.toEntity(collectorDto);
 
+        collectorService.sendMessage(collectorResponse);
         collectorRepository.save(collector);
         log.info("Saved into DB: {}", collector);
     }

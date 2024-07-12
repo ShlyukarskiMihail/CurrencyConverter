@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface CollectorService {
 
+    void sendMessage(CollectorResponse collectorResponse);
+
     CollectorResponse getRatesData();
 
     RateResponse getLatestRateForCurrency(final String currency);
