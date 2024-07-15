@@ -20,9 +20,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 @RequestMapping("/json_api")
 public class JsonApiController {
+
     private final GatewayService gatewayService;
 
-    @Cacheable(cacheNames = "ratesCache")
     @PostMapping(value = "/current", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getCurrentRates(@RequestBody @Valid RateRequest request) {
         try {

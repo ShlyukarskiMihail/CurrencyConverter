@@ -15,15 +15,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Log4j2
 public class CurrencyServiceImpl implements CurrencyService {
 
-    @Value("${FIXER_URL}")
+    @Value("${fixer.url}")
     private String apiUrl;
 
-    @Value("${FIXER_KEY}")
+    @Value("${fixer.key}")
     private String apiKey;
 
     private final WebClient.Builder webClientBuilder;
 
-    @Cacheable("myCache")
+    @Cacheable("latest-rates")
     @Override
     public CollectorResponse getLatestRates() {
         log.info("Sending request to Fixer API: {}", getResource(apiUrl, apiKey));
