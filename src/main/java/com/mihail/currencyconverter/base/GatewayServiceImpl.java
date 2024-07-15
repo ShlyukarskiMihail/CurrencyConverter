@@ -11,6 +11,7 @@ import com.mihail.currencyconverter.currencystatistic.service.StatisticsServiceI
 import com.mihail.currencyconverter.ratecollectormodule.service.CollectorService;
 import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,10 +23,8 @@ public class GatewayServiceImpl implements GatewayService {
     private final StatisticsServiceImpl statisticsService;
 
     @Override
-    public RateResponse getCurrentRates(RateRequest request) throws DuplicateRequestException {
-        if (statisticsService.isRequestDuplicated(request.getRequestId())) {
-            throw new DuplicateRequestException("Duplicate request ID");
-        }
+    @Cacheable(cacheNames = "current-rates", key = "#request.currency + '-' + #request.client")
+    public RateResponse getCurrentRates(RateRequest request) {
         statisticsService.storeRequestStatistics("EXT_SERVICE_X", request.getRequestId(), request.getClient());
         return collectorService.getLatestRateForCurrency(request.getCurrency());
     }

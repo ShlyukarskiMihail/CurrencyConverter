@@ -1,4 +1,4 @@
-package com.mihail.currencyconverter.ratecollectormodule.config;
+package com.mihail.currencyconverter.base.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
