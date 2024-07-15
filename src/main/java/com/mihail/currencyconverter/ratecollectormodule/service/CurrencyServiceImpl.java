@@ -4,6 +4,7 @@ import com.mihail.currencyconverter.ratecollectormodule.controller.response.Coll
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientException;
@@ -22,9 +23,11 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     private final WebClient.Builder webClientBuilder;
 
+    @Cacheable("myCache")
     @Override
     public CollectorResponse getLatestRates() {
         log.info("Sending request to Fixer API: {}", getResource(apiUrl, apiKey));
+        log.info("Executing getLatestRates - not from cache");
 
         try {
             final CollectorResponse response = buildResponse(getResource(apiUrl, apiKey));
