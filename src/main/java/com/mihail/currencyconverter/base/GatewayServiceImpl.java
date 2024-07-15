@@ -6,9 +6,9 @@ import com.mihail.currencyconverter.currencystatistic.controller.request.XmlComm
 import com.mihail.currencyconverter.currencystatistic.controller.response.HistoryResponse;
 import com.mihail.currencyconverter.currencystatistic.controller.response.RateResponse;
 import com.mihail.currencyconverter.currencystatistic.controller.response.XmlCommandResponse;
-import com.mihail.currencyconverter.collector.service.RatesCollectorService;
 import com.mihail.currencyconverter.currencystatistic.service.HistoryServiceImpl;
 import com.mihail.currencyconverter.currencystatistic.service.StatisticsServiceImpl;
+import com.mihail.currencyconverter.ratecollectormodule.service.CollectorService;
 import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class GatewayServiceImpl implements GatewayService {
 
-    private final RatesCollectorService ratesCollectorService;
+    private final CollectorService collectorService;
     private final HistoryServiceImpl historyService;
     private final StatisticsServiceImpl statisticsService;
 
@@ -27,7 +27,7 @@ public class GatewayServiceImpl implements GatewayService {
             throw new DuplicateRequestException("Duplicate request ID");
         }
         statisticsService.storeRequestStatistics("EXT_SERVICE_X", request.getRequestId(), request.getClient());
-        return ratesCollectorService.getLatestRatesForCurrency(request.getCurrency());
+        return collectorService.getLatestRateForCurrency(request.getCurrency());
     }
 
     @Override
@@ -36,7 +36,7 @@ public class GatewayServiceImpl implements GatewayService {
             throw new DuplicateRequestException("Duplicate request ID");
         }
 
-        var rateHistories = ratesCollectorService.getHistoricalRates(request.getCurrency(), request.getPeriod());
+        var rateHistories = collectorService.getHistoricalRates(request.getCurrency(), request.getPeriod());
         historyService.storeHistoryRequestStatistics("EXT_SERVICE_X", request.getRequestId(), request.getClient(), rateHistories);
 
         return HistoryResponse.builder()
@@ -71,7 +71,7 @@ public class GatewayServiceImpl implements GatewayService {
             throw new DuplicateRequestException("Duplicate request ID");
         }
 
-        var rateHistories = ratesCollectorService.getHistoricalRates(currency, period);
+        var rateHistories = collectorService.getHistoricalRates(currency, period);
         historyService.storeHistoryRequestStatistics("EXT_SERVICE_Y", request.getId(), clientId, rateHistories);
 
         response.setStatus("success");
@@ -94,7 +94,7 @@ public class GatewayServiceImpl implements GatewayService {
         }
 
         statisticsService.storeRequestStatistics("EXT_SERVICE_Y", request.getId(), clientId);
-        var ratesResponse = ratesCollectorService.getLatestRatesForCurrency(currency);
+        var ratesResponse = collectorService.getLatestRateForCurrency(currency);
 
         response.setStatus("success");
         response.setMessage("Current rate for " + currency);

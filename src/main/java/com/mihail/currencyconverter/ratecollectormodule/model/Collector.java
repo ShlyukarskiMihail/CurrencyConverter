@@ -1,4 +1,4 @@
-package com.mihail.currencyconverter.collector.model;
+package com.mihail.currencyconverter.ratecollectormodule.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,15 +10,15 @@ import java.util.List;
 import static jakarta.persistence.FetchType.LAZY;
 
 @NamedEntityGraph(
-        name = "rates-collector-graph",
+        name = "collector-graph",
         attributeNodes = {
                 @NamedAttributeNode("timestamp"),
                 @NamedAttributeNode("baseCurrency"),
-                @NamedAttributeNode(value = "currencyRatesList", subgraph = "rates-list-subgraph")
+                @NamedAttributeNode(value = "rateList", subgraph = "rates-subgraph")
         },
         subgraphs = {
                 @NamedSubgraph(
-                        name = "rates-list-subgraph",
+                        name = "rates-subgraph",
                         attributeNodes = {
                                 @NamedAttributeNode("currencyCode"),
                                 @NamedAttributeNode("rateToEuro")
@@ -32,7 +32,7 @@ import static jakarta.persistence.FetchType.LAZY;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Entity
-public class RatesCollector {
+public class Collector {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,12 +44,12 @@ public class RatesCollector {
     @Column
     private String baseCurrency;
 
-    @OneToMany(mappedBy = "ratesCollector", fetch = LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CurrencyRates> currencyRatesList = new ArrayList<>();
+    @OneToMany(mappedBy = "collector", fetch = LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rate> rateList = new ArrayList<>();
 
     @Override
     public String toString() {
-        return "RatesCollector{" +
+        return "Rates Collector{" +
                 "id=" + id +
                 ", timestamp=" + timestamp +
                 ", baseCurrency='" + baseCurrency + '\'' +

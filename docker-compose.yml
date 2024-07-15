@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "127.0.0.1:5672:5672"  
+      - "127.0.0.1:15672:15672" 
+    environment:
+      RABBITMQ_DEFAULT_USER: "rabbit"
+      RABBITMQ_DEFAULT_PASS: "rabbitmq"
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "-rabbit inet_dist_listen_min 25672 -rabbit inet_dist_listen_max 25672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq  # Persist data outside the container
+    network_mode: bridge
+
+volumes:
+  rabbitmq_data:
+    driver: local

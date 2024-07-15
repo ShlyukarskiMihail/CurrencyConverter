@@ -1,4 +1,4 @@
-package com.mihail.currencyconverter.collector.model;
+package com.mihail.currencyconverter.ratecollectormodule.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
@@ -7,9 +7,9 @@ import lombok.*;
 import java.math.BigDecimal;
 
 @NamedEntityGraph(
-        name = "currency-rates",
+        name = "rates",
         attributeNodes = {
-                @NamedAttributeNode("ratesCollector"),
+                @NamedAttributeNode("collector"),
                 @NamedAttributeNode("currencyCode"),
                 @NamedAttributeNode("rateToEuro")
         }
@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Entity
-public class CurrencyRates {
+public class Rate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,8 +28,8 @@ public class CurrencyRates {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
-    @JoinColumn(name = "rates_collector_id", nullable = false)
-    private RatesCollector ratesCollector;
+    @JoinColumn(name = "collector_id", nullable = false)
+    private Collector collector;
 
     @Column(nullable = false)
     private String currencyCode;

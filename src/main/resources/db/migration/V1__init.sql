@@ -1,17 +1,17 @@
-CREATE TABLE IF NOT EXISTS rates_collector
+CREATE TABLE IF NOT EXISTS collector
 (
     id            BIGINT AUTO_INCREMENT PRIMARY KEY,
     timestamp     DATETIME NOT NULL,
     base_currency VARCHAR(255)
 );
 
-CREATE TABLE IF NOT EXISTS currency_rates
+CREATE TABLE IF NOT EXISTS rate
 (
     id                 BIGINT AUTO_INCREMENT PRIMARY KEY,
-    rates_collector_id BIGINT         NOT NULL,
+    collector_id BIGINT         NOT NULL,
     currency_code      VARCHAR(255)   NOT NULL,
     rate_to_euro       DECIMAL(19, 4) NOT NULL,
-    CONSTRAINT fk_rates_collector FOREIGN KEY (rates_collector_id) REFERENCES rates_collector (id)
+    CONSTRAINT fk_rates_collector FOREIGN KEY (collector_id) REFERENCES collector (id)
 );
 
 CREATE TABLE IF NOT EXISTS statistics_collector
