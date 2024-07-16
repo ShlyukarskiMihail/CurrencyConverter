@@ -31,15 +31,12 @@ public class GatewayServiceImpl implements GatewayService {
 
     @Override
     @Transactional(rollbackFor = DataIntegrityViolationException.class)
-    //@Cacheable(cacheNames = "current-rates", key = "#request.currency + '-' + #request.client")
     public RateResponse getCurrentRates(RateRequest request) {
         statisticsService.storeRequestStatistics("EXT_SERVICE_X", request.getRequestId(), request.getClient());
         return collectorService.getLatestRateForCurrency(request.getCurrency());
     }
 
-
     @Override
-    //@Cacheable(cacheNames = "history-rates", key = "#request.currency + '-' + #request.period")
     public HistoryResponse getHistoryRates(HistoryRequest request) throws DuplicateRequestException {
 
         final List<RateHistory> rateHistories = collectorService.getHistoricalRates(request.getCurrency(), request.getPeriod());
