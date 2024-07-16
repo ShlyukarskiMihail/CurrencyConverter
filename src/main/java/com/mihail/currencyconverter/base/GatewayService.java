@@ -8,9 +8,9 @@ import com.mihail.currencyconverter.currencystatistic.controller.response.RateRe
 import com.mihail.currencyconverter.currencystatistic.controller.response.XmlCommandResponse;
 
 public interface GatewayService {
-    RateResponse getCurrentRates(RateRequest request);
+    RateResponse getCurrentRates(final RateRequest request);
 
-    HistoryResponse getHistoryRates(HistoryRequest request);
+    HistoryResponse getHistoryRates(final HistoryRequest request);
 
-    XmlCommandResponse handleXmlCommand(XmlCommandRequest request);
+    XmlCommandResponse handleXmlCommand(final XmlCommandRequest request);
 }

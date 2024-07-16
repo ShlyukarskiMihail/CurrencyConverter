@@ -37,14 +37,13 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         if (isRequestDuplicated(requestId)) {
             throw new DataIntegrityViolationException(DUPLICATED_REQUEST.getDescription() + " for request_id: " + requestId);
-        } else {
-            requestStatisticRepository.save(StatisticsCollector.builder()
-                    .serviceName(serviceName)
-                    .requestId(requestId)
-                    .timestamp(LocalDateTime.now())
-                    .clientId(client)
-                    .build());
         }
+        requestStatisticRepository.save(StatisticsCollector.builder()
+                .serviceName(serviceName)
+                .requestId(requestId)
+                .timestamp(LocalDateTime.now())
+                .clientId(client)
+                .build());
     }
 
     @Override
@@ -52,19 +51,21 @@ public class StatisticsServiceImpl implements StatisticsService {
                                               final String requestId,
                                               final String client,
                                               final List<RateHistory> rateHistories) {
-
-        final HistoryCollector history = HistoryCollector.builder()
-                .serviceName(serviceName)
-                .requestId(requestId)
-                .clientId(client)
-                .build();
-
-        for (final RateHistory rateHistory : rateHistories) {
-            rateHistory.setHistoryCollector(history);
+        if (isHistoryRequestDuplicated(requestId)) {
+            throw new DataIntegrityViolationException(DUPLICATED_REQUEST.getDescription() + " for request_id: " + requestId);
         }
+            final HistoryCollector history = HistoryCollector.builder()
+                    .serviceName(serviceName)
+                    .requestId(requestId)
+                    .clientId(client)
+                    .build();
 
-        history.setRateHistory(rateHistories);
-        rateHistoryRepository.save(history);
-        log.info(history);
+            for (final RateHistory rateHistory : rateHistories) {
+                rateHistory.setHistoryCollector(history);
+            }
+
+            history.setRateHistory(rateHistories);
+            rateHistoryRepository.save(history);
+            log.info(history);
     }
 }

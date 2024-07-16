@@ -26,14 +26,14 @@ public class GatewayServiceImpl implements GatewayService {
 
     @Override
     @Transactional(rollbackFor = DataIntegrityViolationException.class)
-    public RateResponse getCurrentRates(RateRequest request) {
+    public RateResponse getCurrentRates(final RateRequest request) {
         statisticsService.storeRequestStatistics("EXT_SERVICE_X", request.getRequestId(), request.getClient());
         return collectorService.getLatestRateForCurrency(request.getCurrency());
     }
 
     @Override
     @Transactional(rollbackFor = DataIntegrityViolationException.class)
-    public HistoryResponse getHistoryRates(HistoryRequest request) throws DuplicateRequestException {
+    public HistoryResponse getHistoryRates(final HistoryRequest request) throws DuplicateRequestException {
         final List<RateHistory> rateHistories = collectorService.getHistoricalRates(request.getCurrency(), request.getPeriod());
         statisticsService.storeHistoryRequestStatistics("EXT_SERVICE_X", request.getRequestId(), request.getClient(), rateHistories);
 
