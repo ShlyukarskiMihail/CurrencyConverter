@@ -1,9 +1,17 @@
 package com.mihail.currencyconverter.currencystatistic.service;
 
-public interface StatisticsService {
-    boolean isRequestDuplicated(String requestId);
+import com.mihail.currencyconverter.currencystatistic.model.RateHistory;
+import java.util.List;
 
-    void storeRequestStatistics(String serviceName,
-                                String requestId,
-                                String client);
+public interface StatisticsService {
+    boolean isRequestDuplicated(final String requestId);
+
+    void storeRequestStatistics(final String serviceName,
+                                final String requestId,
+                                final String client);
+
+    void storeHistoryRequestStatistics(final String serviceName,
+                                       final String requestId,
+                                       final String client,
+                                       final List<RateHistory> rateHistories);
 }
