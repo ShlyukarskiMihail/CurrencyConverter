@@ -6,13 +6,18 @@ import com.mihail.currencyconverter.currencystatistic.controller.request.XmlComm
 import com.mihail.currencyconverter.currencystatistic.controller.response.HistoryResponse;
 import com.mihail.currencyconverter.currencystatistic.controller.response.RateResponse;
 import com.mihail.currencyconverter.currencystatistic.controller.response.XmlCommandResponse;
+import com.mihail.currencyconverter.currencystatistic.model.RateHistory;
 import com.mihail.currencyconverter.currencystatistic.service.HistoryServiceImpl;
 import com.mihail.currencyconverter.currencystatistic.service.StatisticsServiceImpl;
+import com.mihail.currencyconverter.ratecollectormodule.model.Rate;
 import com.mihail.currencyconverter.ratecollectormodule.service.CollectorService;
 import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,19 +28,18 @@ public class GatewayServiceImpl implements GatewayService {
     private final StatisticsServiceImpl statisticsService;
 
     @Override
-    @Cacheable(cacheNames = "current-rates", key = "#request.currency + '-' + #request.client")
+    //@Cacheable(cacheNames = "current-rates", key = "#request.currency + '-' + #request.client")
     public RateResponse getCurrentRates(RateRequest request) {
         statisticsService.storeRequestStatistics("EXT_SERVICE_X", request.getRequestId(), request.getClient());
         return collectorService.getLatestRateForCurrency(request.getCurrency());
     }
 
-    @Override
-    public HistoryResponse getHistoryRates(HistoryRequest request) throws DuplicateRequestException {
-        if (historyService.isHistoryRequestDuplicated(request.getRequestId())) {
-            throw new DuplicateRequestException("Duplicate request ID");
-        }
 
-        var rateHistories = collectorService.getHistoricalRates(request.getCurrency(), request.getPeriod());
+    @Override
+    //@Cacheable(cacheNames = "history-rates", key = "#request.currency + '-' + #request.period")
+    public HistoryResponse getHistoryRates(HistoryRequest request) throws DuplicateRequestException {
+
+        final List<RateHistory> rateHistories = collectorService.getHistoricalRates(request.getCurrency(), request.getPeriod());
         historyService.storeHistoryRequestStatistics("EXT_SERVICE_X", request.getRequestId(), request.getClient(), rateHistories);
 
         return HistoryResponse.builder()

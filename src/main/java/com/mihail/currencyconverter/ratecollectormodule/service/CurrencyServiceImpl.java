@@ -23,7 +23,7 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     private final WebClient.Builder webClientBuilder;
 
-    @Cacheable("latest-rates")
+    //@Cacheable("latest-rates")
     @Override
     public CollectorResponse getLatestRates() {
         log.info("Sending request to Fixer API: {}", getResource(apiUrl, apiKey));

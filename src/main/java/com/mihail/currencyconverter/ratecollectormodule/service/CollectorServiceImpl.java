@@ -7,7 +7,6 @@ import com.mihail.currencyconverter.ratecollectormodule.repository.CollectorRepo
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -57,8 +56,10 @@ public class CollectorServiceImpl implements CollectorService {
 
     @Override
     public List<RateHistory> getHistoricalRates(String currency, int period) {
+        final LocalDateTime end = LocalDateTime.now();
+        final LocalDateTime start = end.minusHours(period);
 
-        var rateCollectors = collectorRepository.findByTimestampBetween(LocalDateTime.now(), LocalDateTime.now().minusHours(period));
+        var rateCollectors = collectorRepository.findByTimestampBetween(start, end);
         return rateCollectors.stream()
                 .flatMap(rc -> rc.getRateList().stream()
                         .filter(rate -> currency.equals(rate.getCurrencyCode()))
