@@ -14,8 +14,10 @@ import com.mihail.currencyconverter.ratecollectormodule.service.CollectorService
 import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class GatewayServiceImpl implements GatewayService {
     private final StatisticsServiceImpl statisticsService;
 
     @Override
+    @Transactional(rollbackFor = DataIntegrityViolationException.class)
     //@Cacheable(cacheNames = "current-rates", key = "#request.currency + '-' + #request.client")
     public RateResponse getCurrentRates(RateRequest request) {
         statisticsService.storeRequestStatistics("EXT_SERVICE_X", request.getRequestId(), request.getClient());

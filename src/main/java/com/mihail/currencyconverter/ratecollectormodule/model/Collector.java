@@ -12,8 +12,6 @@ import static jakarta.persistence.FetchType.LAZY;
 @NamedEntityGraph(
         name = "collector-graph",
         attributeNodes = {
-                @NamedAttributeNode("timestamp"),
-                @NamedAttributeNode("baseCurrency"),
                 @NamedAttributeNode(value = "rateList", subgraph = "rates-subgraph")
         },
         subgraphs = {
