@@ -2,18 +2,19 @@ package com.mihail.currencyconverter.currencystatistic.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static jakarta.persistence.FetchType.LAZY;
-
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
+@Entity
+@Setter(AccessLevel.PUBLIC)
 @NamedEntityGraph(
         name = "history-collector-graph",
         attributeNodes = {
-                @NamedAttributeNode("serviceName"),
-                @NamedAttributeNode("requestId"),
-                @NamedAttributeNode("clientId"),
                 @NamedAttributeNode(value = "rateHistory", subgraph = "rate-history")
         },
         subgraphs = {
@@ -25,35 +26,19 @@ import static jakarta.persistence.FetchType.LAZY;
                                 @NamedAttributeNode("timestamp"),
                                 @NamedAttributeNode("historyCollector")
                         })})
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(of = "id")
-@Entity
-public class HistoryCollector {
+public class HistoryCollector extends BaseCollector {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String serviceName;
-
-    @Column(nullable = false, unique = true)
-    private String requestId;
-
-    private String clientId;
-
-    @OneToMany(mappedBy = "historyCollector", fetch = LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "historyCollector", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RateHistory> rateHistory = new ArrayList<>();
 
     @Override
     public String toString() {
         return "HistoryCollector{" +
-                "id=" + id +
-                ", serviceName='" + serviceName + '\'' +
-                ", requestId='" + requestId + '\'' +
-                ", clientId='" + clientId + '\'' +
+                "id=" + getId() +
+                ", serviceName='" + getServiceName() + '\'' +
+                ", requestId='" + getRequestId() + '\'' +
+                ", clientId='" + getClientId() + '\'' +
+                ", rateHistory=" + rateHistory +
                 '}';
     }
 }

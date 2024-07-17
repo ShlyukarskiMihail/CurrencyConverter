@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RateHistoryRepository extends JpaRepository<HistoryCollector, Long> {
 
-    @EntityGraph("rate-history")
+    @EntityGraph("history-collector-graph")
     boolean existsByRequestId(final String requestId);
 }
