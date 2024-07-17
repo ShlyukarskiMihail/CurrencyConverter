@@ -15,7 +15,7 @@ import java.util.List;
 @NamedEntityGraph(
         name = "history-collector-graph",
         attributeNodes = {
-                @NamedAttributeNode(value = "rateHistory", subgraph = "rate-history")
+                @NamedAttributeNode(value = "historicalRates", subgraph = "rate-history")
         },
         subgraphs = {
                 @NamedSubgraph(
@@ -26,10 +26,10 @@ import java.util.List;
                                 @NamedAttributeNode("timestamp"),
                                 @NamedAttributeNode("historyCollector")
                         })})
-public class HistoryCollector extends BaseCollector {
+public class CurrencyHistory extends StatisticCollector {
 
     @OneToMany(mappedBy = "historyCollector", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RateHistory> rateHistory = new ArrayList<>();
+    private List<HistoricalRate> historicalRates = new ArrayList<>();
 
     @Override
     public String toString() {
@@ -38,7 +38,7 @@ public class HistoryCollector extends BaseCollector {
                 ", serviceName='" + getServiceName() + '\'' +
                 ", requestId='" + getRequestId() + '\'' +
                 ", clientId='" + getClientId() + '\'' +
-                ", rateHistory=" + rateHistory +
+                ", rateHistory=" + historicalRates +
                 '}';
     }
 }

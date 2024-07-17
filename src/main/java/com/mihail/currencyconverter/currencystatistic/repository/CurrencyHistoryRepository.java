@@ -1,10 +1,10 @@
 package com.mihail.currencyconverter.currencystatistic.repository;
 
-import com.mihail.currencyconverter.currencystatistic.model.HistoryCollector;
+import com.mihail.currencyconverter.currencystatistic.model.CurrencyHistory;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RateHistoryRepository extends JpaRepository<HistoryCollector, Long> {
+public interface CurrencyHistoryRepository extends JpaRepository<CurrencyHistory, Long> {
 
     @EntityGraph("history-collector-graph")
     boolean existsByRequestId(final String requestId);

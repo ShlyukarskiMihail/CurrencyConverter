@@ -1,7 +1,7 @@
 package com.mihail.currencyconverter.ratecollectormodule.service;
 
 import com.mihail.currencyconverter.currencystatistic.controller.response.RateResponse;
-import com.mihail.currencyconverter.currencystatistic.model.RateHistory;
+import com.mihail.currencyconverter.currencystatistic.model.HistoricalRate;
 import com.mihail.currencyconverter.ratecollectormodule.controller.response.CollectorResponse;
 import com.mihail.currencyconverter.ratecollectormodule.repository.CollectorRepository;
 import lombok.RequiredArgsConstructor;
@@ -55,7 +55,7 @@ public class CollectorServiceImpl implements CollectorService {
     }
 
     @Override
-    public List<RateHistory> getHistoricalRates(String currency, int period) {
+    public List<HistoricalRate> getHistoricalRates(String currency, int period) {
         final LocalDateTime end = LocalDateTime.now();
         final LocalDateTime start = end.minusHours(period);
 
@@ -63,7 +63,7 @@ public class CollectorServiceImpl implements CollectorService {
         return rateCollectors.stream()
                 .flatMap(rc -> rc.getRateList().stream()
                         .filter(rate -> currency.equals(rate.getCurrencyCode()))
-                        .map(rate -> RateHistory.builder()
+                        .map(rate -> HistoricalRate.builder()
                                 .currency(currency)
                                 .rate(rate.getRateToEuro())
                                 .timestamp(rc.getTimestamp())

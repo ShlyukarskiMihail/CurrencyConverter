@@ -1,7 +1,7 @@
 package com.mihail.currencyconverter.ratecollectormodule.service;
 
 import com.mihail.currencyconverter.currencystatistic.controller.response.RateResponse;
-import com.mihail.currencyconverter.currencystatistic.model.RateHistory;
+import com.mihail.currencyconverter.currencystatistic.model.HistoricalRate;
 import com.mihail.currencyconverter.ratecollectormodule.controller.response.CollectorResponse;
 
 import java.util.List;
@@ -14,5 +14,5 @@ public interface CollectorService {
 
     RateResponse getLatestRateForCurrency(final String currency);
 
-    List<RateHistory> getHistoricalRates(final String currency, final int period);
+    List<HistoricalRate> getHistoricalRates(final String currency, final int period);
 }

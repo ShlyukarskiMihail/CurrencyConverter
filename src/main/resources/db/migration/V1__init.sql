@@ -14,29 +14,29 @@ CREATE TABLE IF NOT EXISTS rate
     CONSTRAINT fk_rates_collector FOREIGN KEY (collector_id) REFERENCES collector (id)
 );
 
-CREATE TABLE IF NOT EXISTS statistics_collector
+CREATE TABLE IF NOT EXISTS currency_state
 (
     id           BIGINT AUTO_INCREMENT PRIMARY KEY,
-    service_name VARCHAR(255),
+    service_name VARCHAR(255) NOT NULL,
     request_id   VARCHAR(255) NOT NULL UNIQUE,
     timestamp    DATETIME,
-    client_id    VARCHAR(255)
+    client_id    VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS history_collector
+CREATE TABLE IF NOT EXISTS currency_history
 (
     id           BIGINT AUTO_INCREMENT PRIMARY KEY,
-    service_name VARCHAR(255),
+    service_name VARCHAR(255) NOT NULL,
     request_id   VARCHAR(255) NOT NULL UNIQUE,
-    client_id    VARCHAR(255)
+    client_id    VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS rate_history
+CREATE TABLE IF NOT EXISTS historical_rate
 (
     id                   BIGINT AUTO_INCREMENT PRIMARY KEY,
-    currency             VARCHAR(255),
-    rate                 DECIMAL(19, 4),
+    currency             VARCHAR(255)          NOT NULL,
+    rate                 DECIMAL(19, 4)        NOT NULL,
     timestamp            DATETIME,
-    history_collector_id BIGINT,
-    CONSTRAINT fk_history_collector FOREIGN KEY (history_collector_id) REFERENCES history_collector (id)
+    currency_history_id  BIGINT                NOT NULL,
+    CONSTRAINT fk_history_rates FOREIGN KEY (currency_history_id) REFERENCES currency_history (id)
 );

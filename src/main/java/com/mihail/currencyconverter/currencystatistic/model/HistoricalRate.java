@@ -2,6 +2,7 @@ package com.mihail.currencyconverter.currencystatistic.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -19,20 +20,24 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Entity
-public class RateHistory {
+public class HistoricalRate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     private String currency;
+
+    @NotNull
     private BigDecimal rate;
+
     private LocalDateTime timestamp;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     @JoinColumn(name = "history_collector_id")
-    private HistoryCollector historyCollector;
+    private CurrencyHistory historyCollector;
 
     @Override
     public String toString() {

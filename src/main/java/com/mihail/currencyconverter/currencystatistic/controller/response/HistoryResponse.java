@@ -3,7 +3,7 @@ package com.mihail.currencyconverter.currencystatistic.controller.response;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import com.mihail.currencyconverter.currencystatistic.model.RateHistory;
+import com.mihail.currencyconverter.currencystatistic.model.HistoricalRate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,5 +23,5 @@ public class HistoryResponse {
 
     @JacksonXmlElementWrapper(localName = "history")
     @JacksonXmlProperty(localName = "RateHistory")
-    private List<RateHistory> history;
+    private List<HistoricalRate> history;
 }

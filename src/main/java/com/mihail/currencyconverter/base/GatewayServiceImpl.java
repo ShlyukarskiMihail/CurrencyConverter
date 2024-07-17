@@ -6,7 +6,7 @@ import com.mihail.currencyconverter.currencystatistic.controller.request.XmlComm
 import com.mihail.currencyconverter.currencystatistic.controller.response.HistoryResponse;
 import com.mihail.currencyconverter.currencystatistic.controller.response.RateResponse;
 import com.mihail.currencyconverter.currencystatistic.controller.response.XmlCommandResponse;
-import com.mihail.currencyconverter.currencystatistic.model.RateHistory;
+import com.mihail.currencyconverter.currencystatistic.model.HistoricalRate;
 import com.mihail.currencyconverter.currencystatistic.service.StatisticsServiceImpl;
 import com.mihail.currencyconverter.ratecollectormodule.service.CollectorService;
 import com.sun.jdi.request.DuplicateRequestException;
@@ -34,7 +34,7 @@ public class GatewayServiceImpl implements GatewayService {
     @Override
     @Transactional(rollbackFor = DataIntegrityViolationException.class)
     public HistoryResponse getHistoryRates(final HistoryRequest request) throws DuplicateRequestException {
-        final List<RateHistory> rateHistories = collectorService.getHistoricalRates(request.getCurrency(), request.getPeriod());
+        final List<HistoricalRate> rateHistories = collectorService.getHistoricalRates(request.getCurrency(), request.getPeriod());
         statisticsService.storeHistoryRequestStatistics("EXT_SERVICE_X", request.getRequestId(), request.getClient(), rateHistories);
 
         return HistoryResponse.builder()

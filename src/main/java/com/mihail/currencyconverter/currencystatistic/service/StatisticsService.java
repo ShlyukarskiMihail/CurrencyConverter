@@ -1,6 +1,6 @@
 package com.mihail.currencyconverter.currencystatistic.service;
 
-import com.mihail.currencyconverter.currencystatistic.model.RateHistory;
+import com.mihail.currencyconverter.currencystatistic.model.HistoricalRate;
 import java.util.List;
 
 public interface StatisticsService {
@@ -13,5 +13,5 @@ public interface StatisticsService {
     void storeHistoryRequestStatistics(final String serviceName,
                                        final String requestId,
                                        final String client,
-                                       final List<RateHistory> rateHistories);
+                                       final List<HistoricalRate> rateHistories);
 }

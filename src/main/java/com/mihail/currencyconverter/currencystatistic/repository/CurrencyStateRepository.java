@@ -1,9 +1,9 @@
 package com.mihail.currencyconverter.currencystatistic.repository;
 
-import com.mihail.currencyconverter.currencystatistic.model.StatisticsCollector;
+import com.mihail.currencyconverter.currencystatistic.model.CurrencyState;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface StatisticCollectorRepository extends JpaRepository<StatisticsCollector, Long> {
+public interface CurrencyStateRepository extends JpaRepository<CurrencyState, Long> {
 
     boolean existsByRequestId(final String requestId);
 }

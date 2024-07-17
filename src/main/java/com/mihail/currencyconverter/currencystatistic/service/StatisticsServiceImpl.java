@@ -1,10 +1,10 @@
 package com.mihail.currencyconverter.currencystatistic.service;
 
-import com.mihail.currencyconverter.currencystatistic.model.HistoryCollector;
-import com.mihail.currencyconverter.currencystatistic.model.RateHistory;
-import com.mihail.currencyconverter.currencystatistic.model.StatisticsCollector;
-import com.mihail.currencyconverter.currencystatistic.repository.RateHistoryRepository;
-import com.mihail.currencyconverter.currencystatistic.repository.StatisticCollectorRepository;
+import com.mihail.currencyconverter.currencystatistic.model.CurrencyHistory;
+import com.mihail.currencyconverter.currencystatistic.model.HistoricalRate;
+import com.mihail.currencyconverter.currencystatistic.model.CurrencyState;
+import com.mihail.currencyconverter.currencystatistic.repository.CurrencyHistoryRepository;
+import com.mihail.currencyconverter.currencystatistic.repository.CurrencyStateRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,8 +19,8 @@ import static com.mihail.currencyconverter.currencystatistic.utils.handler.Busin
 @Log4j2
 public class StatisticsServiceImpl implements StatisticsService {
 
-    private final StatisticCollectorRepository requestStatisticRepository;
-    private final RateHistoryRepository rateHistoryRepository;
+    private final CurrencyStateRepository requestStatisticRepository;
+    private final CurrencyHistoryRepository rateHistoryRepository;
 
     public boolean isRequestDuplicated(final String requestId) {
         return requestStatisticRepository.existsByRequestId(requestId);
@@ -38,7 +38,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         if (isRequestDuplicated(requestId)) {
             throw new DataIntegrityViolationException(DUPLICATED_REQUEST.getDescription() + " for request_id: " + requestId);
         }
-        requestStatisticRepository.save(StatisticsCollector.builder()
+        requestStatisticRepository.save(CurrencyState.builder()
                 .serviceName(serviceName)
                 .requestId(requestId)
                 .timestamp(LocalDateTime.now())
@@ -50,21 +50,21 @@ public class StatisticsServiceImpl implements StatisticsService {
     public void storeHistoryRequestStatistics(final String serviceName,
                                               final String requestId,
                                               final String client,
-                                              final List<RateHistory> rateHistories) {
+                                              final List<HistoricalRate> rates) {
         if (isHistoryRequestDuplicated(requestId)) {
             throw new DataIntegrityViolationException(DUPLICATED_REQUEST.getDescription() + " for request_id: " + requestId);
         }
-            final HistoryCollector history = HistoryCollector.builder()
+            final CurrencyHistory history = CurrencyHistory.builder()
                     .serviceName(serviceName)
                     .requestId(requestId)
                     .clientId(client)
                     .build();
 
-            for (final RateHistory rateHistory : rateHistories) {
-                rateHistory.setHistoryCollector(history);
+            for (final HistoricalRate rate : rates) {
+                rate.setHistoryCollector(history);
             }
 
-            history.setRateHistory(rateHistories);
+            history.setHistoricalRates(rates);
             rateHistoryRepository.save(history);
             log.info(history);
     }

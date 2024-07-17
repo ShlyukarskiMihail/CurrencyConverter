@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @SuperBuilder
 @Entity
-public class StatisticsCollector extends BaseCollector {
+public class CurrencyState extends StatisticCollector {
 
     @JsonFormat(pattern = "yyyy-MM-dd 'T' HH:mm:ss")
     private LocalDateTime timestamp;

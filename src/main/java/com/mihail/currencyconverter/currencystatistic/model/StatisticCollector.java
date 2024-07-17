@@ -13,7 +13,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-public abstract class BaseCollector implements Serializable {
+public abstract class StatisticCollector implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +25,7 @@ public abstract class BaseCollector implements Serializable {
     @Column(nullable = false, unique = true)
     private String requestId;
 
+    @NotNull
     private String clientId;
 
     @Override

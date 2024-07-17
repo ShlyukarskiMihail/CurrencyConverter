@@ -22,7 +22,7 @@ public class CollectorScheduler {
     private final CollectorMapper collectorMapper;
     private final CollectorRepository collectorRepository;
 
-    @Scheduled(cron = "0 */30 * * * *")
+    @Scheduled(cron = "0 */2 * * * *")
     public void updateCurrencyRates() {
         final CollectorResponse collectorResponse = collectorService.getRatesData();
         final CollectorDto collectorDto = collectorDtoMapper.mapToDto(collectorResponse);
